@@ -35,7 +35,7 @@ const DATA = {
   projectsCount: 3,
   techCount: 10,
 
-  resumeUrl: "YOUR_RESUME_LINK",
+  resumeUrl: "file:///C:/Users/sehga/OneDrive/Desktop/my%20resume.pdf",
 
 roles: [
   "Aspiring Full Stack Developer",
@@ -1302,7 +1302,7 @@ function AchievementEntry({ item, last, entryDelay, spineInView }) {
   );
 }
 
-/ * ============================================================
+// * ============================================================
   //  RESUME SECTION
   //  ============================================================ */
 function ResumePreview() {
@@ -1524,6 +1524,7 @@ export default function App() {
         <Skills />
         <Projects />
         <Achievements />
+        <ResumePreview />
         <Contact />
         <Footer />
       </div>
