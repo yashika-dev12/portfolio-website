@@ -1302,6 +1302,59 @@ function AchievementEntry({ item, last, entryDelay, spineInView }) {
   );
 }
 
+/ * ============================================================
+  //  RESUME SECTION
+  //  ============================================================ */
+function ResumePreview() {
+  return (
+    <section id="resume" style={{ padding:"100px 64px", borderTop:`1px solid ${T.border}` }}>
+      <h2 style={{ fontSize:44, fontWeight:800, color:T.ink, marginBottom:48 }}>Resume</h2>
+      
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48 }}>
+        <div style={{ background:T.bgCard, padding:32, borderRadius:12, border:`1px solid ${T.border}` }}>
+          <div style={{ height:250, background:`${T.sage}20`, borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:24 }}>
+            📄 PDF Preview
+          </div>
+          <h3 style={{ fontSize:20, fontWeight:800, color:T.ink, marginBottom:12 }}>Download Resume</h3>
+          <p style={{ color:T.inkMid, marginBottom:24 }}>Get my complete CV and experience.</p>
+          <a href={DATA.resumeUrl} download style={{ padding:"12px 24px", background:T.sage, color:T.bg, fontWeight:700, textDecoration:"none", borderRadius:8, display:"inline-block" }}>
+            ⬇️ Download PDF
+          </a>
+        </div>
+ 
+        <div style={{ display:"flex", flexDirection:"column", justifyContent:"center", gap:24 }}>
+          <div>
+            <h3 style={{ fontSize:16, fontWeight:800, color:T.sage, marginBottom:12, textTransform:"uppercase" }}>Education</h3>
+            <p style={{ fontWeight:700, color:T.ink, margin:0 }}>{DATA.university}</p>
+            <p style={{ color:T.inkMid, margin:"4px 0" }}>{DATA.degree}</p>
+            <p style={{ color:T.inkFaint, fontSize:13 }}>CGPA: {DATA.cgpa}</p>
+          </div>
+ 
+          <div>
+            <h3 style={{ fontSize:16, fontWeight:800, color:T.orange, marginBottom:12, textTransform:"uppercase" }}>Quick Stats</h3>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+              <div style={{ background:`${T.sage}10`, padding:12, borderRadius:8 }}>
+                <p style={{ fontSize:12, color:T.inkFaint, fontWeight:600, margin:0 }}>PROJECTS</p>
+                <p style={{ fontSize:20, fontWeight:800, color:T.sage, margin:"4px 0 0 0" }}>15+</p>
+              </div>
+              <div style={{ background:`${T.orange}10`, padding:12, borderRadius:8 }}>
+                <p style={{ fontSize:12, color:T.inkFaint, fontWeight:600, margin:0 }}>EXPERIENCE</p>
+                <p style={{ fontSize:20, fontWeight:800, color:T.orange, margin:"4px 0 0 0" }}>2+ Yrs</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <style>{`
+        @media(max-width:1024px) {
+          #resume > div { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </section>
+  );
+}
+
 /* ============================================================
    CONTACT
    ============================================================ */
