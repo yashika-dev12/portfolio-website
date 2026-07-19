@@ -87,7 +87,5 @@ I'm always open to suggestions and feedback. Feel free to open an issue or conne
 
 ## 🌍 Live Demo
 
-🔗yashika-portfolio-website.vercel.app
+🔗 https://yashika-portfolio-website.vercel.app/
 ---
-
-### ⭐ If you like this project, consider giving it a star!
