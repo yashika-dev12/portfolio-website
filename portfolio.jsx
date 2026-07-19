@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 /* ============================================================
    DESIGN TOKENS
@@ -24,12 +24,13 @@ const T = {
    ============================================================ */
 const DATA = {
   name: "Yashika",
-  // nameShort: "YS",
+  nameShort: "YS",
 
   bio: "Aspiring Full Stack Developer and CSE student exploring AI, emerging technologies, and impactful digital solutions.",
   email: "your-email@example.com",
   location: "Chandigarh, India",
   university: "Chitkara University",
+  degree: "B.E. Computer Science Engineering (AI & Future Technologies)",
 
   cgpa: "8.9",
   projectsCount: 3,
@@ -264,7 +265,7 @@ function ScrollProgress() {
 }
 
 /* ============================================================
-   BUTTERFLY CURSOR - FIXED & ENHANCED
+   BUTTERFLY CURSOR
    ============================================================ */
 function Butterfly() {
   const [butterflies, setButterflies] = useState([]);
@@ -272,10 +273,10 @@ function Butterfly() {
   const lastPosRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    if (Math.abs(mousePos.x - lastPosRef.current.x) > 40 || 
+    if (Math.abs(mousePos.x - lastPosRef.current.x) > 40 ||
         Math.abs(mousePos.y - lastPosRef.current.y) > 40) {
       lastPosRef.current = mousePos;
-      
+
       const id = Date.now() + Math.random();
       const newButterfly = {
         id,
@@ -283,13 +284,13 @@ function Butterfly() {
         y: mousePos.y - 12,
         duration: 1.2 + Math.random() * 0.6,
       };
-      
+
       setButterflies(prev => [...prev.slice(-1), newButterfly]);
-      
+
       const timer = setTimeout(() => {
         setButterflies(prev => prev.filter(b => b.id !== id));
       }, (2.4 + Math.random() * 0.8) * 1000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [mousePos]);
@@ -318,31 +319,12 @@ function Butterfly() {
               filter: `drop-shadow(0 2px 6px ${T.shadow})`,
             }}
           >
-            {/* Left wing outer */}
-            <path
-              d="M14 8 Q11 5 8 6 Q5 7 6 10 Q7 13 14 13 Z"
-              fill={T.sage}
-              opacity="0.3"
-            />
-            {/* Left wing inner accent */}
+            <path d="M14 8 Q11 5 8 6 Q5 7 6 10 Q7 13 14 13 Z" fill={T.sage} opacity="0.3" />
             <circle cx="10" cy="9" r="1.5" fill={T.ink} opacity="0.4" />
-            
-            {/* Right wing outer */}
-            <path
-              d="M14 8 Q17 5 20 6 Q23 7 22 10 Q21 13 14 13 Z"
-              fill={T.sage}
-              opacity="0.95"
-            />
-            {/* Right wing inner accent */}
+            <path d="M14 8 Q17 5 20 6 Q23 7 22 10 Q21 13 14 13 Z" fill={T.sage} opacity="0.95" />
             <circle cx="18" cy="9" r="1.5" fill={T.ink} opacity="0.4" />
-            
-            {/* Body */}
             <ellipse cx="14" cy="13" rx="2" ry="3" fill={T.ink} opacity="0.8" />
-            
-            {/* Head */}
             <circle cx="14" cy="10" r="1.2" fill={T.ink} />
-            
-            {/* Antennae */}
             <line x1="14" y1="8.8" x2="12" y2="5.5" stroke={T.sage} strokeWidth="1.2" opacity="0.8" strokeLinecap="round" />
             <line x1="14" y1="8.8" x2="16" y2="5.5" stroke={T.sage} strokeWidth="1.2" opacity="0.8" strokeLinecap="round" />
           </svg>
@@ -351,28 +333,12 @@ function Butterfly() {
 
       <style>{`
         @keyframes butterflyFlutter {
-          0% { 
-            transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); 
-            opacity: 1; 
-          }
-          15% { 
-            transform: translateY(-12px) translateX(4px) rotate(15deg) scale(0.95); 
-          }
-          30% { 
-            transform: translateY(-6px) translateX(-4px) rotate(-10deg) scale(0.98); 
-          }
-          50% { 
-            transform: translateY(-18px) translateX(6px) rotate(8deg) scale(1); 
-            opacity: 1;
-          }
-          70% { 
-            transform: translateY(-32px) translateX(-8px) rotate(-5deg) scale(0.95); 
-            opacity: 0.8;
-          }
-          100% { 
-            transform: translateY(-48px) translateX(0px) rotate(0deg) scale(0.7); 
-            opacity: 0; 
-          }
+          0% { transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); opacity: 1; }
+          15% { transform: translateY(-12px) translateX(4px) rotate(15deg) scale(0.95); }
+          30% { transform: translateY(-6px) translateX(-4px) rotate(-10deg) scale(0.98); }
+          50% { transform: translateY(-18px) translateX(6px) rotate(8deg) scale(1); opacity: 1; }
+          70% { transform: translateY(-32px) translateX(-8px) rotate(-5deg) scale(0.95); opacity: 0.8; }
+          100% { transform: translateY(-48px) translateX(0px) rotate(0deg) scale(0.7); opacity: 0; }
         }
       `}</style>
     </>
@@ -415,7 +381,7 @@ function MagBtn({ children, onClick, href, download, sx, primary, accent }) {
   const style = {
     display:"inline-flex", alignItems:"center", justifyContent:"center",
     padding:"12px 24px", borderRadius:10, fontSize:14, fontWeight:600,
-    cursor:"pointer", textDecoration:"none", border:"none", letterSpacing:"-0.01em",
+    cursor:"pointer", textDecoration:"none", letterSpacing:"-0.01em",
     background: (primary||accent) ? bg : (hov ? T.bgCard : "transparent"),
     color: primary||accent ? "#0B1020" : hov ? T.ink : T.inkMid,
     border: primary||accent ? "none" : `1px solid ${hov ? T.borderMid : T.border}`,
@@ -447,7 +413,7 @@ function Reveal({ children, delay=0, y=32, x=0 }) {
 }
 
 /* ============================================================
-   NAV — left sidebar
+   NAV — top bar
    ============================================================ */
 const NAV_ITEMS = [
   { id:"home",         label:"Home",         num:"—"  },
@@ -455,7 +421,8 @@ const NAV_ITEMS = [
   { id:"skills",       label:"Skills",       num:"02" },
   { id:"projects",     label:"Projects",     num:"03" },
   { id:"achievements", label:"Achievements", num:"04" },
-  { id:"contact",      label:"Contact",      num:"05" },
+  { id:"resume",       label:"Resume",       num:"05" },
+  { id:"contact",      label:"Contact",      num:"06" },
 ];
 
 function Nav({ active }) {
@@ -472,7 +439,6 @@ function Nav({ active }) {
 
   return (
     <>
-      {/* Top navigation bar — desktop + mobile */}
       <nav style={{
         position:"fixed", top:0, left:0, right:0, zIndex:200,
         display:"flex", alignItems:"center", justifyContent:"space-between",
@@ -485,7 +451,6 @@ function Nav({ active }) {
         transition:"padding 0.35s cubic-bezier(0.22,1,0.36,1), background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease",
         opacity: mounted ? 1 : 0, transform: mounted ? "none" : "translateY(-12px)",
       }}>
-        {/* Logo */}
         <button onClick={() => go("home")} style={{
           background:"none", border:"none", cursor:"pointer",
           display:"flex", alignItems:"center", gap:8, padding:0,
@@ -498,7 +463,6 @@ function Nav({ active }) {
           <span style={{ fontWeight:700, fontSize:14, color:T.ink, letterSpacing:"-0.02em" }} className="nav-wordmark">{DATA.name}</span>
         </button>
 
-        {/* Center nav pill — desktop only */}
         <div className="nav-pill" style={{
           display:"flex", alignItems:"center", gap:2,
           background: scrolled ? T.bgCard : `${T.bgCard}90`,
@@ -527,7 +491,6 @@ function Nav({ active }) {
           })}
         </div>
 
-        {/* Right: resume CTA (desktop) + hamburger (mobile) */}
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
           <div className="nav-cta">
             <MagBtn href={DATA.resumeUrl} download primary sx={{ padding:"8px 18px", borderRadius:8, fontSize:13 }}>Resume</MagBtn>
@@ -543,7 +506,6 @@ function Nav({ active }) {
         </div>
       </nav>
 
-      {/* Mobile full-screen overlay */}
       {open && (
         <div style={{ position:"fixed", inset:0, background:T.bg, zIndex:300, display:"flex", flexDirection:"column", padding:"24px 28px", animation:"fadeIn 0.2s ease" }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:52 }}>
@@ -588,7 +550,7 @@ function Nav({ active }) {
    HERO — deep parallax, ambient drift, paper texture
    ============================================================ */
 function Hero() {
-  const mouse  = useMouse(0.05); // very lagged for slow parallax
+  const mouse  = useMouse(0.05);
   const [mounted, setMounted] = useState(false);
   const [roleIdx, setRoleIdx] = useState(0);
   const [roleVis, setRoleVis] = useState(true);
@@ -598,7 +560,6 @@ function Hero() {
 
   useEffect(() => { setTimeout(() => setMounted(true), 60); }, []);
 
-  // Role cycling
   useEffect(() => {
     const iv = setInterval(() => {
       setRoleVis(false);
@@ -607,7 +568,6 @@ function Hero() {
     return () => clearInterval(iv);
   }, []);
 
-  // Ambient drift — independent of mouse, always moving
   useEffect(() => {
     const tick = (ts) => {
       t.current = ts * 0.0003;
@@ -620,7 +580,6 @@ function Hero() {
           const dy = Math.cos(t.current * speed * 0.7 + phase) * 18;
           orb.style.transform = `translate(${dx}px,${dy}px)`;
         });
-        // Geometric shapes
         const shapes = orbsRef.current.querySelectorAll("[data-shape]");
         shapes.forEach((sh, i) => {
           const speed = 0.12 + i * 0.05;
@@ -637,7 +596,6 @@ function Hero() {
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  // Mouse parallax layers (separate depths)
   const W = typeof window !== "undefined" ? window.innerWidth : 1200;
   const H = typeof window !== "undefined" ? window.innerHeight : 800;
   const nx = (mouse.x / W - 0.5);
@@ -646,7 +604,6 @@ function Hero() {
   return (
     <section id="home" style={{ minHeight:"100vh", display:"flex", flexDirection:"column", justifyContent:"center", padding:"80px 64px", position:"relative", overflow:"hidden" }}>
 
-      {/* — Background layer 0: paper grain via SVG filter (minimal for premium look) — */}
       <svg style={{ position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",opacity:0.08 }}>
         <filter id="grain">
           <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
@@ -656,7 +613,6 @@ function Hero() {
         <rect width="100%" height="100%" filter="url(#grain)" />
       </svg>
 
-      {/* — Background layer 1: subtle grid — */}
       <div style={{
         position:"absolute", inset:0, pointerEvents:"none",
         backgroundImage:`linear-gradient(${T.border}70 1px,transparent 1px),linear-gradient(90deg,${T.border}70 1px,transparent 1px)`,
@@ -666,14 +622,12 @@ function Hero() {
         transition:"transform 0.05s linear",
       }} />
 
-      {/* — Background layer 2: orbs + shapes, ambient drift — */}
       <div ref={orbsRef} style={{ position:"absolute", inset:0, pointerEvents:"none" }}>
-        {/* Deep navy orbs — teal + lavender */}
         {[
-          { left:"8%",  top:"18%", size:380, color:`${T.sage}22`,   depth:18 },
-          { left:"68%", top:"55%", size:300, color:`${T.steel}14`,  depth:28 },
-          { left:"50%", top:"8%",  size:200, color:`${T.orange}18`, depth:22 },
-          { left:"80%", top:"25%", size:160, color:`${T.sage}12`,   depth:35 },
+          { left:"8%",  top:"18%", size:380, color:`${T.sage}22` },
+          { left:"68%", top:"55%", size:300, color:`${T.steel}14` },
+          { left:"50%", top:"8%",  size:200, color:`${T.orange}18` },
+          { left:"80%", top:"25%", size:160, color:`${T.sage}12` },
         ].map((o, i) => (
           <div key={i} data-orb=""
             style={{
@@ -685,7 +639,6 @@ function Hero() {
           />
         ))}
 
-        {/* Floating geometric shapes */}
         {[
           { left:"78%", top:"72%", size:44,  shape:"circle",  color:`${T.sage}35` },
           { left:"62%", top:"18%", size:28,  shape:"square",  color:`${T.sage}40` },
@@ -706,7 +659,6 @@ function Hero() {
         ))}
       </div>
 
-      {/* — Background layer 3: large ghost index number — mouse parallax depth 3 — */}
       <div style={{
         position:"absolute", right:-24, top:"50%",
         fontSize:"clamp(200px,32vw,380px)", fontWeight:900, lineHeight:1,
@@ -715,13 +667,10 @@ function Hero() {
         transition:"transform 0.06s linear",
       }}>01</div>
 
-      {/* — Content — */}
       <div style={{ position:"relative", zIndex:2, display:"flex", alignItems:"center", gap:80, justifyContent:"space-between" }}>
 
-        {/* Left side: Text content */}
         <div style={{ flex:1, minWidth:0 }}>
 
-        {/* Status badge */}
         <div style={{
           display:"inline-flex", alignItems:"center", gap:8,
           background:`${T.sage}12`, border:`1px solid ${T.sage}38`, borderRadius:100,
@@ -734,14 +683,12 @@ function Hero() {
           <span style={{ fontSize:12,fontWeight:600,color:T.sage,letterSpacing:"0.02em" }}>Open to opportunities · {DATA.location}</span>
         </div>
 
-        {/* Eyebrow */}
         <div style={{
           fontSize:11, fontWeight:700, color:T.inkFaint, letterSpacing:"0.15em",
           textTransform:"uppercase", marginBottom:18,
           opacity:mounted?1:0, transition:"opacity 0.7s ease 0.22s",
         }}>Computer Science Engineering Student · AI & Future Technologies</div>
 
-        {/* Name */}
         <h1 style={{ margin:0, marginBottom:28 }}>
           {DATA.name.split(" ").map((word, i) => (
             <span key={i} style={{ display:"block", overflow:"hidden", lineHeight:1.02 }}>
@@ -758,7 +705,6 @@ function Hero() {
           ))}
         </h1>
 
-        {/* Role ticker */}
         <div style={{ height:28, overflow:"hidden", marginBottom:36 }}>
           <span style={{
             display:"block", fontSize:18, color:T.inkMid, fontWeight:500, letterSpacing:"-0.02em",
@@ -773,7 +719,6 @@ function Hero() {
           transition:"opacity 0.7s ease 0.52s, transform 0.7s cubic-bezier(0.22,1,0.36,1) 0.52s",
         }}>{DATA.bio}</p>
 
-        {/* CTAs */}
         <div style={{
           display:"flex", gap:12, flexWrap:"wrap", alignItems:"center",
           opacity:mounted?1:0, transform:mounted?"none":"translateY(14px)",
@@ -784,13 +729,11 @@ function Hero() {
         </div>
         </div>
 
-        {/* Right side: Circular Portrait with floating stat cards */}
         <div style={{
           flex:1, display:"flex", alignItems:"center", justifyContent:"center", position:"relative",
           opacity:mounted?1:0, transform:mounted?"none":"translateY(20px)",
           transition:"opacity 0.7s ease 0.4s, transform 0.7s cubic-bezier(0.22,1,0.36,1) 0.4s",
         }}>
-          {/* Main circular portrait container */}
           <div style={{
             position:"relative",
             width:340, height:340,
@@ -800,7 +743,6 @@ function Hero() {
             boxShadow:`0 20px 60px ${T.shadow}, inset 0 1px 0 ${T.sage}40`,
             border:`1px solid ${T.sage}50`,
           }}>
-            {/* Portrait placeholder - replace with your image */}
             <div style={{
               width:"100%", height:"100%",
               background:`linear-gradient(135deg, ${T.sage}40 0%, ${T.bgCard}60% 50%, ${T.steel}30%)`,
@@ -809,14 +751,11 @@ function Hero() {
               padding:20,
             }}>
               <div>
-                {/* When you add your image, replace this div with: */}
-                {/* <img src="YOUR_IMAGE_URL" style={{width:"100%", height:"100%", objectFit:"cover"}} /> */}
                 Add your<br/>portrait photo<br/>here 📸
               </div>
             </div>
           </div>
 
-          {/* Floating stat cards */}
           <div style={{
             position:"absolute", top:"20px", right:"0px",
             background:T.bgCard, border:`1px solid ${T.border}`, borderRadius:12,
@@ -853,7 +792,6 @@ function Hero() {
             <div style={{ fontSize:10, color:T.inkFaint }}>Something New</div>
           </div>
 
-          {/* Glowing orbs */}
           <div style={{
             position:"absolute", top:"-40px", right:"-40px",
             width:120, height:120,
@@ -869,10 +807,6 @@ function Hero() {
         </div>
       </div>
 
-
-
-
-      {/* Scroll indicator */}
       <div style={{
         position:"absolute", bottom:40, left:64,
         display:"flex", alignItems:"center", gap:12, color:T.inkFaint, fontSize:11,
@@ -921,9 +855,7 @@ function About() {
           </Reveal>
           <Reveal delay={130}>
             <p style={{ color:T.inkMid, lineHeight:1.82, fontSize:15, marginBottom:20 }}>
-             
               I'm a first-year Computer Science Engineering student specializing in AI and Future Technologies at Chitkara University. I enjoy building websites, learning new technologies, and turning ideas into practical software projects.
-
             </p>
           </Reveal>
           <Reveal delay={190}>
@@ -935,13 +867,12 @@ function About() {
 
         <div>
           <Reveal delay={80} x={20}>
-            {/* Stats with 3D card tilt */}
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:1, marginBottom:40, background:T.border, borderRadius:14, overflow:"hidden", boxShadow:`0 4px 24px ${T.shadow}` }}>
               {[
                 { val:cgpa.toFixed(1), label:"CGPA",    suffix:"" },
                 { val:Math.round(projects), label:"Projects", suffix:"+" },
                 { val:Math.round(tech),     label:"Tech",     suffix:"+" },
-              ].map((s, i) => <StatCard key={s.label} {...s} />)}
+              ].map((s) => <StatCard key={s.label} {...s} />)}
             </div>
           </Reveal>
 
@@ -985,7 +916,7 @@ function EduEntry({ ed }) {
     <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{
         borderLeft:`2px solid ${hov||ed.current?T.sage:T.border}`,
-        paddingLeft:20, marginBottom:28, paddingBottom:4,
+        marginBottom:28, paddingBottom:4,
         background:hov?T.bgCard:"transparent",
         borderRadius:hov?"0 10px 10px 0":"0 0 0 0",
         padding:hov?"12px 16px 12px 20px":"0 0 0 20px",
@@ -1001,12 +932,11 @@ function EduEntry({ ed }) {
 }
 
 /* ============================================================
-   SKILLS — workspace panel with animated indicator
+   SKILLS
    ============================================================ */
 function Skills() {
-  const cats = ["All", ...new Set(DATA.skills.map(s => s.category))]
+  const cats = ["All", ...new Set(DATA.skills.map(s => s.category))];
   const [active, setActive] = useState("All");
-  const [prevActive, setPrev] = useState("All");
   const [transitioning, setTransitioning] = useState(false);
   const [panelRef, panelInView] = useInView(0.05);
   const levelLabel = l => l>=90?"Expert":l>=80?"Advanced":l>=70?"Proficient":"Familiar";
@@ -1015,7 +945,7 @@ function Skills() {
   const switchCat = c => {
     if (c === active) return;
     setTransitioning(true);
-    setTimeout(() => { setActive(c); setPrev(c); setTransitioning(false); }, 200);
+    setTimeout(() => { setActive(c); setTransitioning(false); }, 200);
   };
 
   return (
@@ -1024,7 +954,6 @@ function Skills() {
         <Reveal><SectionEyebrow num="02">Skills</SectionEyebrow></Reveal>
       </div>
       <div ref={panelRef} style={{ display:"grid", gridTemplateColumns:"200px 1fr", borderTop:`1px solid ${T.border}`, marginTop:32 }}>
-        {/* Category sidebar */}
         <div style={{ borderRight:`1px solid ${T.border}`, padding:"32px 0", background:T.bgAlt }}>
           <div style={{ fontSize:11, fontWeight:700, color:T.inkFaint, letterSpacing:"0.1em", textTransform:"uppercase", padding:"0 24px", marginBottom:16 }}>Category</div>
           {cats.map((c, i) => (
@@ -1042,7 +971,6 @@ function Skills() {
           ))}
         </div>
 
-        {/* Skill rows — animate out/in on category change */}
         <div style={{ padding:"32px 48px", display:"flex", flexDirection:"column", gap:2, opacity:transitioning?0:1, transition:"opacity 0.18s ease" }}>
           {filtered.map((sk, i) => <SkillRow key={sk.name} skill={sk} inView={panelInView} delay={i*40} levelLabel={levelLabel} />)}
         </div>
@@ -1080,7 +1008,7 @@ function SkillRow({ skill, inView, delay, levelLabel }) {
 }
 
 /* ============================================================
-   PROJECTS — rows with true 3D tilt on the whole row
+   PROJECTS
    ============================================================ */
 function Projects() {
   const [expanded, setExpanded] = useState(null);
@@ -1122,7 +1050,6 @@ function ProjectRow({ project, idx, expanded, onToggle }) {
       opacity:inView?1:0, transform:inView?"none":"translateY(22px)",
       transition:`opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${idx*90}ms, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${idx*90}ms`,
     }}>
-      {/* Tilt wrapper */}
       <div ref={rowRef}
         onMouseMove={move} onMouseEnter={()=>setHov(true)} onMouseLeave={leave}
         onClick={onToggle}
@@ -1152,7 +1079,6 @@ function ProjectRow({ project, idx, expanded, onToggle }) {
         </div>
       </div>
 
-      {/* Expand panel — height animation */}
       <ExpandPanel project={project} expanded={expanded} />
     </div>
   );
@@ -1256,13 +1182,12 @@ function Achievements() {
       </Reveal>
 
       <div ref={spineRef} style={{ maxWidth:720, position:"relative" }}>
-        {/* Growing spine */}
         <div style={{ position:"absolute", left:134, top:8, bottom:0, width:1, background:T.border, overflow:"hidden" }}>
           <div style={{ width:"100%", background:`linear-gradient(to bottom,${T.sage},${T.borderMid})`, height:`${spineH}%`, transition:"height 2s cubic-bezier(0.22,1,0.36,1) 0.15s" }} />
         </div>
         {DATA.achievements.map((a, i) => (
           <Reveal key={i} delay={i * 110}>
-            <AchievementEntry item={a} last={i === DATA.achievements.length - 1} entryDelay={i * 110} spineInView={spineInView} />
+            <AchievementEntry item={a} entryDelay={i * 110} spineInView={spineInView} />
           </Reveal>
         ))}
       </div>
@@ -1270,7 +1195,7 @@ function Achievements() {
   );
 }
 
-function AchievementEntry({ item, last, entryDelay, spineInView }) {
+function AchievementEntry({ item, entryDelay, spineInView }) {
   const [hov, setHov] = useState(false);
   const [dotIn, setDotIn] = useState(false);
   useEffect(() => { if (spineInView) setTimeout(() => setDotIn(true), entryDelay + 300); }, [spineInView, entryDelay]);
@@ -1282,7 +1207,6 @@ function AchievementEntry({ item, last, entryDelay, spineInView }) {
         <span style={{ fontSize:12, fontWeight:600, color:hov?T.sage:T.inkFaint, transition:"color 0.25s ease", letterSpacing:"0.02em" }}>{item.date}</span>
       </div>
       <div style={{ display:"flex", flexDirection:"column", alignItems:"center" }}>
-        {/* Dot with pop-in */}
         <div style={{
           width:10, height:10, borderRadius:"50%", zIndex:1, marginTop:3, flexShrink:0,
           background:hov?T.sage:T.bgCard,
@@ -1302,55 +1226,104 @@ function AchievementEntry({ item, last, entryDelay, spineInView }) {
   );
 }
 
-// / * ============================================================
-//  RESUME SECTION
-    // ============================================================ */
+/* ============================================================
+   RESUME PREVIEW
+   ============================================================ */
 function ResumePreview() {
+  const [ref, inView] = useInView(0.08);
+  const [hov, setHov] = useState(false);
+
+  const quickStats = [
+    { label: "Projects",   val: `${DATA.projectsCount}+`, color: T.sage },
+    { label: "Tech Stack", val: `${DATA.techCount}+`,      color: T.orange },
+    { label: "CGPA",       val: DATA.cgpa,                 color: T.steel },
+  ];
+
   return (
-    <section id="resume" style={{ padding:"100px 64px", borderTop:`1px solid ${T.border}` }}>
-      <h2 style={{ fontSize:44, fontWeight:800, color:T.ink, marginBottom:48 }}>Resume</h2>
-      
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48 }}>
-        <div style={{ background:T.bgCard, padding:32, borderRadius:12, border:`1px solid ${T.border}` }}>
-          <div style={{ height:250, background:`${T.sage}20`, borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:24 }}>
-            📄 PDF Preview
+    <section id="resume" ref={ref} style={{ borderTop:`1px solid ${T.border}`, padding:"100px 64px" }}>
+      <Reveal><SectionEyebrow num="05">Resume</SectionEyebrow></Reveal>
+      <Reveal delay={60}>
+        <h2 style={{ fontSize:"clamp(28px,4vw,44px)", fontWeight:800, letterSpacing:"-0.03em", color:T.ink, lineHeight:1.1, margin:"24px 0 48px" }}>
+          The short version.
+        </h2>
+      </Reveal>
+
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:56, alignItems:"stretch" }}>
+
+        {/* Preview card */}
+        <Reveal delay={100} x={-20}>
+          <div
+            onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+            style={{
+              background:T.bgCard, borderRadius:16, border:`1px solid ${hov?T.sage+"60":T.border}`,
+              padding:32, height:"100%", boxSizing:"border-box",
+              boxShadow: hov ? `0 20px 48px ${T.shadowMd}` : `0 4px 20px ${T.shadow}`,
+              transform: hov ? "translateY(-4px)" : "none",
+              transition:"transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease, border-color 0.35s ease",
+            }}>
+            <div style={{
+              height:220, borderRadius:12, marginBottom:24,
+              background:`linear-gradient(160deg, ${T.sage}18, ${T.bgAlt} 65%)`,
+              border:`1px solid ${T.border}`,
+              display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:10,
+            }}>
+              <span style={{ fontSize:34 }}>📄</span>
+              <span style={{ fontSize:12, color:T.inkFaint, fontWeight:600, letterSpacing:"0.06em", textTransform:"uppercase" }}>PDF Preview</span>
+            </div>
+            <h3 style={{ fontSize:19, fontWeight:800, color:T.ink, marginBottom:10 }}>Download my resume</h3>
+            <p style={{ color:T.inkMid, fontSize:14, lineHeight:1.7, marginBottom:26 }}>
+              A one-page summary of my education, projects, and skills — ready to share for internships and opportunities.
+            </p>
+            <MagBtn primary href={DATA.resumeUrl} download sx={{ padding:"12px 24px", borderRadius:10, fontSize:14 }}>
+              ⬇ Download PDF
+            </MagBtn>
           </div>
-          <h3 style={{ fontSize:20, fontWeight:800, color:T.ink, marginBottom:12 }}>Download Resume</h3>
-          <p style={{ color:T.inkMid, marginBottom:24 }}>Get my complete CV and experience.</p>
-          <a href={DATA.resumeUrl} download style={{ padding:"12px 24px", background:T.sage, color:T.bg, fontWeight:700, textDecoration:"none", borderRadius:8, display:"inline-block" }}>
-            ⬇️ Download PDF
-          </a>
-        </div>
- 
-        <div style={{ display:"flex", flexDirection:"column", justifyContent:"center", gap:24 }}>
-          <div>
-            <h3 style={{ fontSize:16, fontWeight:800, color:T.sage, marginBottom:12, textTransform:"uppercase" }}>Education</h3>
-            <p style={{ fontWeight:700, color:T.ink, margin:0 }}>{DATA.university}</p>
-            <p style={{ color:T.inkMid, margin:"4px 0" }}>{DATA.degree}</p>
-            <p style={{ color:T.inkFaint, fontSize:13 }}>CGPA: {DATA.cgpa}</p>
-          </div>
- 
-          <div>
-            <h3 style={{ fontSize:16, fontWeight:800, color:T.orange, marginBottom:12, textTransform:"uppercase" }}>Quick Stats</h3>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
-              <div style={{ background:`${T.sage}10`, padding:12, borderRadius:8 }}>
-                <p style={{ fontSize:12, color:T.inkFaint, fontWeight:600, margin:0 }}>PROJECTS</p>
-                <p style={{ fontSize:20, fontWeight:800, color:T.sage, margin:"4px 0 0 0" }}>15+</p>
-              </div>
-              <div style={{ background:`${T.orange}10`, padding:12, borderRadius:8 }}>
-                <p style={{ fontSize:12, color:T.inkFaint, fontWeight:600, margin:0 }}>EXPERIENCE</p>
-                <p style={{ fontSize:20, fontWeight:800, color:T.orange, margin:"4px 0 0 0" }}>2+ Yrs</p>
+        </Reveal>
+
+        {/* Summary column */}
+        <Reveal delay={160} x={20}>
+          <div style={{ display:"flex", flexDirection:"column", gap:32, height:"100%" }}>
+            <div>
+              <FieldLabel>Education</FieldLabel>
+              <p style={{ fontWeight:700, color:T.ink, fontSize:15, margin:"0 0 4px" }}>{DATA.university}</p>
+              <p style={{ color:T.inkMid, fontSize:14, margin:"0 0 4px", lineHeight:1.6 }}>{DATA.degree}</p>
+              <p style={{ color:T.sage, fontSize:13, fontWeight:600, margin:0 }}>CGPA: {DATA.cgpa}</p>
+            </div>
+
+            <div>
+              <FieldLabel>Quick stats</FieldLabel>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12 }}>
+                {quickStats.map(s => (
+                  <div key={s.label} style={{
+                    background:T.bgAlt, border:`1px solid ${T.border}`, borderRadius:10,
+                    padding:"14px 12px", textAlign:"center",
+                  }}>
+                    <div style={{ fontSize:20, fontWeight:800, color:s.color }}>{s.val}</div>
+                    <div style={{ fontSize:10, color:T.inkFaint, marginTop:4, textTransform:"uppercase", letterSpacing:"0.06em" }}>{s.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
+
+            <div>
+              <FieldLabel>Core skills</FieldLabel>
+              <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+                {DATA.skills.slice(0, 6).map((sk, i) => (
+                  <TechBadge key={sk.name} label={sk.name} delay={i*40} accent={T.sage} />
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginTop:"auto" }}>
+              <MagBtn href={DATA.resumeUrl} download sx={{ padding:"12px 24px", borderRadius:10, fontSize:14 }}>
+                View full resume →
+              </MagBtn>
+            </div>
           </div>
-        </div>
+        </Reveal>
       </div>
- 
-      <style>{`
-        @media(max-width:1024px) {
-          #resume > div { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+
+      <style>{`@media(max-width:768px){#resume>div:last-child{grid-template-columns:1fr!important;gap:32px!important;}}`}</style>
     </section>
   );
 }
@@ -1367,7 +1340,7 @@ function Contact() {
 
   return (
     <section id="contact" ref={ref} style={{ borderTop:`1px solid ${T.border}`, padding:"100px 64px" }}>
-      <Reveal><SectionEyebrow num="05">Contact</SectionEyebrow></Reveal>
+      <Reveal><SectionEyebrow num="06">Contact</SectionEyebrow></Reveal>
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:80, marginTop:48, alignItems:"start" }}>
 
         <div style={{ opacity:inView?1:0, transform:inView?"none":"translateY(24px)", transition:"all 0.75s cubic-bezier(0.22,1,0.36,1) 0.08s" }}>
@@ -1450,22 +1423,24 @@ function SocialLink({ social, delay, inView }) {
 /* ============================================================
    FOOTER
    ============================================================ */
+function FooterSocialIcon({ social }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <a href={social.href} title={social.name}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{ width:36, height:36, borderRadius:8, background:hov?T.ink:T.bgCard, border:`1px solid ${hov?T.ink:T.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:hov?T.bg:T.inkMid, fontSize:11, fontWeight:700, textDecoration:"none", transform:hov?"translateY(-3px)":"none", boxShadow:hov?`0 6px 18px ${T.shadow}`:"none", transition:"all 0.25s cubic-bezier(0.22,1,0.36,1)" }}>
+      {social.short}
+    </a>
+  );
+}
+
 function Footer() {
   return (
     <footer style={{ borderTop:`1px solid ${T.border}`, padding:"32px 64px", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:16 }}>
       <span style={{ fontWeight:800, fontSize:14, color:T.ink, letterSpacing:"-0.03em" }}>{DATA.name}</span>
       <span style={{ fontSize:12, color:T.inkFaint }}>© {new Date().getFullYear()} · Built with React</span>
       <div style={{ display:"flex", gap:8 }}>
-        {DATA.socials.map(s => {
-          const [hov, setHov] = useState(false);
-          return (
-            <a key={s.name} href={s.href} title={s.name}
-              onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-              style={{ width:36, height:36, borderRadius:8, background:hov?T.ink:T.bgCard, border:`1px solid ${hov?T.ink:T.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:hov?T.bg:T.inkMid, fontSize:11, fontWeight:700, textDecoration:"none", transform:hov?"translateY(-3px)":"none", boxShadow:hov?`0 6px 18px ${T.shadow}`:"none", transition:"all 0.25s cubic-bezier(0.22,1,0.36,1)" }}>
-              {s.short}
-            </a>
-          );
-        })}
+        {DATA.socials.map(s => <FooterSocialIcon key={s.name} social={s} />)}
       </div>
     </footer>
   );
@@ -1507,7 +1482,6 @@ export default function App() {
         ::selection{background:${T.sage}40;color:#0B1020;}
         @keyframes badgeIn{from{opacity:0;transform:scale(0.85) translateY(4px)}to{opacity:1;transform:none}}
         @media(max-width:768px){
-          .main-content{margin-left:0!important;padding-top:64px!important;}
           body{cursor:auto!important;}
           .no-cursor{display:none!important;}
         }
@@ -1518,12 +1492,13 @@ export default function App() {
       <ScrollProgress />
       <Nav active={active} />
 
-      <div className="main-content" style={{ marginLeft:200 }}>
+      <div className="main-content" style={{ paddingTop:80 }}>
         <Hero />
         <About />
         <Skills />
         <Projects />
         <Achievements />
+        <ResumePreview />
         <Contact />
         <Footer />
       </div>
