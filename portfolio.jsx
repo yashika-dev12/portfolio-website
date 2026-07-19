@@ -1484,6 +1484,7 @@ export default function App() {
         @media(max-width:768px){
           body{cursor:auto!important;}
           .no-cursor{display:none!important;}
+          .main-content{margin-left:0!important;}
         }
       `}</style>
 
@@ -1492,7 +1493,7 @@ export default function App() {
       <ScrollProgress />
       <Nav active={active} />
 
-      <div className="main-content" style={{ paddingTop:80 }}>
+      <div className="main-content" style={{ marginLeft:200, paddingTop:80 }}>
         <Hero />
         <About />
         <Skills />
